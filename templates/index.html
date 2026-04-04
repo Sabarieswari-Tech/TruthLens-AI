@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TruthLens AI</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+<header class="header">
+
+<h1 class="main-title">TruthLens AI</h1>
+<p class="tagline">Multimodal Fake Content Detection</p>
+
+<!-- Updated Navbar -->
+<nav class="navbar">
+    <a href="/">Home</a>
+    <a href="/about">About</a>
+    <a href="/developer">Developer</a>
+</nav>
+
+</header>
+
+<div class="container">
+
+    <!-- TEXT DETECTION -->
+    <div class="card">
+        <h3>Text Fake News Detection</h3>
+        <form action="/predict_text" method="post">
+            <textarea
+                name="text"
+                placeholder="Enter news text..."
+                rows="2"
+                style="width:100%; height:70px; resize:none; margin-bottom:12px;"
+                required></textarea>
+            <button type="submit" style="margin-top:12px;">Analyze Text</button>
+        </form>
+
+        {% if text_prediction %}
+        <div class="result-box">
+            <div class="result">Prediction: {{ text_prediction }}</div>
+            <div class="confidence">Confidence: {{ text_confidence }}%</div>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- IMAGE DETECTION -->
+    <div class="card">
+        <h3>Image Fake Detection</h3>
+        <form action="/predict_image" method="post" enctype="multipart/form-data">
+            <input type="file" name="image" required>
+            <button type="submit">Analyze Image</button>
+        </form>
+
+        {% if image_prediction %}
+        <div class="result-box">
+            <div class="result">Prediction: {{ image_prediction }}</div>
+            <div class="confidence">Confidence: {{ image_confidence }}%</div>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- AUDIO DETECTION -->
+    <div class="card">
+        <h3>Audio Deepfake Detection</h3>
+        <form action="/predict_audio" method="post" enctype="multipart/form-data">
+            <input type="file" name="audio" accept=".wav,.mp3" required>
+            <button type="submit">Analyze Audio</button>
+        </form>
+
+        {% if audio_prediction %}
+        <div class="result-box">
+            <div class="result">Prediction: {{ audio_prediction }}</div>
+            <div class="confidence">Confidence: {{ audio_confidence }}%</div>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- VIDEO DETECTION -->
+    <div class="card">
+        <h3>Video Deepfake Detection</h3>
+        <form action="/predict_video" method="post" enctype="multipart/form-data">
+            <input type="file" name="video" accept=".mp4,.avi,.mov" required>
+            <button type="submit">Analyze Video</button>
+        </form>
+
+        {% if video_prediction %}
+        <div class="result-box">
+            <div class="result">Prediction: {{ video_prediction }}</div>
+            <div class="confidence">Confidence: {{ video_confidence }}%</div>
+        </div>
+        {% endif %}
+    </div>
+
+</div>
+
+</body>
+</html>

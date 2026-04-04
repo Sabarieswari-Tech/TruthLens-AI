@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Developer | TruthLens AI</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<style>
+/* Center wrapper */
+.dev-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 80px;
+    padding: 20px;
+}
+
+/* Card style */
+.dev-card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    padding: 60px 40px; /* increased padding */
+    border-radius: 25px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+    text-align: center;
+    max-width: 600px; /* increased width */
+    transition: all 0.3s ease;
+}
+
+.dev-card:hover {
+    transform: translateY(-7px);
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7),
+        0 0 25px rgba(123, 97, 255, 0.4);
+}
+
+/* Title */
+.dev-card h2 {
+    font-size: 2.2rem; /* slightly larger */
+    font-weight: 700;
+    margin-bottom: 25px; /* more spacing below */
+    background: linear-gradient(90deg, #7b61ff, #4e41c9);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Name and Role */
+.dev-card p.name {
+    color: #cfcfff;
+    font-size: 1.8rem; /* increased font size */
+    margin-bottom: 15px; /* spacing after name */
+}
+
+.dev-card p.role {
+    color: #cfcfff;
+    font-size: 16px;
+    margin-bottom: 20px; /* spacing after role */
+}
+
+/* Links container */
+.dev-links {
+    margin-top: 25px;
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+}
+
+/* Link style */
+.dev-links a {
+    color: #7b61ff;
+    text-decoration: none;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: 0.3s;
+}
+
+.dev-links a:hover {
+    color: #ffffff;
+}
+
+/* Social icons */
+.dev-links img {
+    width: 22px;
+    height: 22px;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    margin-top: 80px;
+    color: #cfcfff;
+    font-size: 14px;
+}
+</style>
+</head>
+
+<body>
+
+<header class="header">
+<h1 class="main-title">TruthLens AI</h1>
+<p class="tagline">Multimodal Fake Content Detection</p>
+<nav class="navbar">
+<a href="/">Home</a>
+<a href="/about">About</a>
+<a href="/developer">Developer</a>
+</nav>
+</header>
+
+<div class="dev-wrapper">
+<div class="dev-card">
+<h2>Developer</h2>
+<p class="name"><strong>S. Sabarieswari</strong></p>
+<p class="role">AI & Data Science Student | Google Student Ambassador | Aspiring AI Engineer</p>
+
+<div class="dev-links">
+<a href="https://github.com/Sabarieswari-Tech" target="_blank">
+    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/github.svg" alt="GitHub Icon"> GitHub
+</a>
+<a href="https://www.linkedin.com/in/sabarieswari-s-91b9b6380/" target="_blank">
+    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/linkedin.svg" alt="LinkedIn Icon"> LinkedIn
+</a>
+</div>
+</div>
+</div>
+
+<footer>
+<p>© 2026 TruthLens AI</p>
+</footer>
+
+</body>
+</html>

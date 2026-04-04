@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>About | TruthLens AI</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+<style>
+/* CENTER ABOUT CONTENT */
+.about-wrapper{
+    width:100%;
+    display:flex;
+    justify-content:center;
+}
+
+/* MAIN CONTAINER */
+.about-container{
+    width:80%;
+    max-width:1100px;
+    display:flex;
+    flex-direction:column;
+    gap:40px;
+    margin-top:40px;
+}
+
+/* CARD DESIGN */
+.about-card{
+    background:rgba(255,255,255,0.05);
+    backdrop-filter:blur(15px);
+    padding:45px;
+    border-radius:25px;
+    border:1px solid rgba(255,255,255,0.08);
+    box-shadow:0 15px 40px rgba(0,0,0,0.6);
+    transition:0.3s;
+    width:100%;
+}
+
+.about-card:hover{
+    transform:translateY(-6px);
+    box-shadow:
+    0 20px 50px rgba(0,0,0,0.6),
+    0 0 20px rgba(123,97,255,0.4);
+}
+
+/* TITLE */
+.about-card h2{
+    margin-bottom:20px;
+    font-size:1.6rem;
+    background:linear-gradient(90deg,#7b61ff,#4e41c9);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+
+/* TEXT */
+.about-card p,
+.about-card li{
+    color:#cfcfff;
+    line-height:1.8;
+    font-size:16px;
+}
+
+/* LIST */
+.about-card ul{
+    margin-left:20px;
+    margin-top:10px;
+}
+
+/* ARCHITECTURE SECTION */
+.architecture{
+    margin-top:25px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:20px;
+}
+
+.arch-row{
+    display:flex;
+    gap:20px;
+    flex-wrap:wrap;
+    justify-content:center;
+}
+
+.arch-box{
+    padding:15px 25px;
+    border-radius:12px;
+    background:rgba(255,255,255,0.08);
+    border:1px solid rgba(255,255,255,0.1);
+    font-weight:500;
+    text-align:center;
+    min-width:160px;
+}
+
+.arrow{
+    font-size:22px;
+    color:#7b61ff;
+}
+
+/* FOOTER */
+footer{
+    text-align:center;
+    margin-top:60px;
+    color:#cfcfff;
+    font-size:14px;
+}
+</style>
+
+</head>
+
+<body>
+
+<header class="header">
+<h1 class="main-title">TruthLens AI</h1>
+<p class="tagline">Multimodal Fake Content Detection</p>
+
+<nav class="navbar">
+<a href="/">Home</a>
+<a href="/about">About</a>
+<a href="/developer">Developer</a>
+</nav>
+</header>
+
+<div class="about-wrapper">
+<div class="about-container">
+
+<!-- ABOUT -->
+<div class="about-card">
+<h2>About TruthLens AI</h2>
+<p>
+TruthLens AI is an intelligent platform designed to detect fake and manipulated digital content. 
+The system analyzes text, images, audio, and videos using machine learning and deep learning models 
+to help users verify the authenticity of online information.
+</p>
+</div>
+
+<!-- MISSION -->
+<div class="about-card">
+<h2>Our Mission</h2>
+<p>
+Our mission is to combat misinformation and improve trust in digital media. 
+TruthLens AI provides powerful AI tools that allow users to quickly analyze 
+and verify content across multiple media formats.
+</p>
+</div>
+
+<!-- TECHNOLOGIES USED (PLACED AFTER MISSION) -->
+<div class="about-card">
+<h2>Technologies Used</h2>
+<ul>
+<li>Python</li>
+<li>Flask</li>
+<li>Machine Learning (SVM, CNN)</li>
+<li>Deep Learning</li>
+<li>HTML & CSS</li>
+<li>NumPy, Pandas</li>
+<li>Scikit-learn</li>
+<li>OpenCV</li>
+<li>Librosa (for audio processing)</li>
+</ul>
+</div>
+
+<!-- HOW IT WORKS -->
+<div class="about-card">
+<h2>How It Works</h2>
+<ul>
+<li><strong>Text:</strong> TF-IDF with SVM analyzes news content.</li>
+<li><strong>Image:</strong> CNN models detect manipulated images.</li>
+<li><strong>Audio:</strong> MFCC features with ML classifier detect deepfake voices.</li>
+<li><strong>Video:</strong> CNN analyzes video frames to detect deepfake videos.</li>
+</ul>
+</div>
+
+<!-- VISUAL ARCHITECTURE -->
+<div class="about-card">
+<h2>TruthLens AI Architecture</h2>
+<div class="architecture">
+<div class="arch-box">User Upload</div>
+<div class="arrow">↓</div>
+<div class="arch-row">
+<div class="arch-box">Text<br>TF-IDF + SVM</div>
+<div class="arch-box">Image<br>CNN Model</div>
+<div class="arch-box">Audio<br>MFCC + ML</div>
+<div class="arch-box">Video<br>CNN Frame Analysis</div>
+</div>
+<div class="arrow">↓</div>
+<div class="arch-box">Prediction Engine</div>
+<div class="arrow">↓</div>
+<div class="arch-box">Real / Fake Result<br>Confidence Score</div>
+</div>
+</div>
+
+<!-- WHY CHOOSE -->
+<div class="about-card">
+<h2>Why Choose TruthLens AI</h2>
+<ul>
+<li>Multimodal fake content detection</li>
+<li>Fast AI-powered predictions</li>
+<li>Simple and user-friendly interface</li>
+<li>Confidence score for each result</li>
+<li>Supports text, image, audio, and video analysis</li>
+</ul>
+</div>
+
+</div>
+</div>
+
+<footer>
+<p>Developed by S. Sabarieswari</p>
+</footer>
+
+</body>
+</html>
