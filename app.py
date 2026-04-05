@@ -1,3 +1,18 @@
+# ------------------------------------------------------------
+# TruthLens AI - Multimodal Fake Content Detection System
+#
+# This Flask application detects whether content is real or fake
+# using machine learning and deep learning models.
+#
+# Supported Modules:
+# 1. Text Fake News Detection
+# 2. Image Manipulation Detection
+# 3. Audio Authenticity Detection
+# 4. Video Deepfake Detection
+#
+# Author: Sabarieswari S
+# ------------------------------------------------------------
+
 from flask import Flask, render_template, request
 import os
 import joblib
@@ -9,34 +24,52 @@ import cv2
 from tensorflow.keras.preprocessing import image
 from werkzeug.utils import secure_filename
 
-# ---------------- APP ----------------
+# ---------------- SUPPRESS TENSORFLOW WARNINGS ----------------
+os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
+
+# ---------------- APP INITIALIZATION ----------------
 app = Flask(__name__)
 
-# ---------------- CONFIG ----------------
+# ---------------- CONFIGURATION ----------------
 UPLOAD_FOLDER = "static/uploads"
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
-app.config["MAX_CONTENT_LENGTH"] = 100 * 1024 * 1024  # 100MB upload limit
+app.config["MAX_CONTENT_LENGTH"] = 100 * 1024 * 1024
 
 # ---------------- ALLOWED FILE TYPES ----------------
 ALLOWED_IMAGE = {"png", "jpg", "jpeg"}
 ALLOWED_AUDIO = {"wav", "mp3"}
 ALLOWED_VIDEO = {"mp4", "avi", "mov"}
 
-# ---------------- LOAD MODELS ----------------
+# ---------------- LOAD MACHINE LEARNING MODELS ----------------
+
+# Text fake news model
 text_model = joblib.load("trained_models/text_model.pkl")
 vectorizer = joblib.load("trained_models/text_vectorizer.pkl")
 
+# Image CNN model
 image_model = tf.keras.models.load_model("trained_models/image_model.h5")
+
+# Audio detection model
 audio_model = joblib.load("trained_models/audio_model.pkl")
-video_model = tf.keras.models.load_model("trained_models/video_model.h5")
 
-# ---------------- FILE CHECK ----------------
-def allowed_file(filename, allowed):
-    return "." in filename and filename.rsplit(".", 1)[1].lower() in allowed
+# -------- VIDEO MODEL (LOAD ONLY IF AVAILABLE) --------
+video_model = None
+video_model_path = "trained_models/video_model.h5"
 
-# ---------------- HOME ----------------
+if os.path.exists(video_model_path):
+    video_model = tf.keras.models.load_model(video_model_path)
+    print("✅ Video model loaded successfully")
+else:
+    print("⚠ Video model not found. Video detection disabled.")
+
+# ---------------- FILE VALIDATION FUNCTION ----------------
+def allowed_file(filename, allowed_extensions):
+    return "." in filename and filename.rsplit(".", 1)[1].lower() in allowed_extensions
+
+
+# ---------------- HOME PAGE ----------------
 @app.route("/")
 def home():
     return render_template(
@@ -51,41 +84,47 @@ def home():
         video_confidence=None
     )
 
+
 # ---------------- ABOUT PAGE ----------------
 @app.route("/about")
 def about():
     return render_template("about.html")
+
 
 # ---------------- DEVELOPER PAGE ----------------
 @app.route("/developer")
 def developer():
     return render_template("developer.html")
 
-# ---------------- TEXT DETECTION ----------------
+
+# ---------------- TEXT FAKE NEWS DETECTION ----------------
 @app.route("/predict_text", methods=["POST"])
 def predict_text():
     text = request.form.get("text")
+
     if not text:
         return render_template("index.html",
                                text_prediction="No text entered",
                                text_confidence=0)
 
     vector = vectorizer.transform([text])
-    pred = text_model.predict(vector)[0]
+    prediction = text_model.predict(vector)[0]
 
-    # Use decision_function for confidence since LinearSVC doesn't have predict_proba
     score = text_model.decision_function(vector)[0]
-    confidence = min(abs(score) * 50, 99.99)  # scale roughly to 0-100%
+    confidence = min(abs(score) * 50, 99.99)
 
-    label = "Real News" if pred == 1 else "Fake News"
+    label = "Real News" if prediction == 1 else "Fake News"
+
     return render_template("index.html",
                            text_prediction=label,
                            text_confidence=round(confidence, 2))
+
 
 # ---------------- IMAGE DETECTION ----------------
 @app.route("/predict_image", methods=["POST"])
 def predict_image():
     file = request.files.get("image")
+
     if not file or file.filename == "":
         return render_template("index.html",
                                image_prediction="No image selected")
@@ -102,23 +141,25 @@ def predict_image():
     img = image.img_to_array(img) / 255.0
     img = np.expand_dims(img, axis=0)
 
-    pred = image_model.predict(img)[0][0]
+    prediction = image_model.predict(img)[0][0]
 
-    if pred > 0.5:
+    if prediction > 0.5:
         label = "Real Image"
-        confidence = round(pred * 100, 2)
+        confidence = round(prediction * 100, 2)
     else:
         label = "Fake Image"
-        confidence = round((1 - pred) * 100, 2)
+        confidence = round((1 - prediction) * 100, 2)
 
     return render_template("index.html",
                            image_prediction=label,
                            image_confidence=confidence)
 
+
 # ---------------- AUDIO DETECTION ----------------
 @app.route("/predict_audio", methods=["POST"])
 def predict_audio():
     file = request.files.get("audio")
+
     if not file or file.filename == "":
         return render_template("index.html",
                                audio_prediction="No audio selected")
@@ -132,27 +173,35 @@ def predict_audio():
     file.save(path)
 
     audio_data, sr = librosa.load(path, duration=3)
+
     mfcc = librosa.feature.mfcc(y=audio_data, sr=sr, n_mfcc=40)
     features = np.mean(mfcc.T, axis=0).reshape(1, -1)
 
-    pred = audio_model.predict(features)[0]
-    # Linear model for audio: use decision_function if SVC-like
+    prediction = audio_model.predict(features)[0]
+
     if hasattr(audio_model, "decision_function"):
         score = audio_model.decision_function(features)[0]
         confidence = min(abs(score) * 50, 99.99)
     else:
-        # fallback if model supports predict_proba
         confidence = round(audio_model.predict_proba(features)[0].max() * 100, 2)
 
-    label = "Real Audio" if pred == 1 else "Fake Audio"
+    label = "Real Audio" if prediction == 1 else "Fake Audio"
+
     return render_template("index.html",
                            audio_prediction=label,
                            audio_confidence=round(confidence, 2))
 
-# ---------------- VIDEO DETECTION ----------------
+
+# ---------------- VIDEO DEEPFAKE DETECTION ----------------
 @app.route("/predict_video", methods=["POST"])
 def predict_video():
+
+    if video_model is None:
+        return render_template("index.html",
+                               video_prediction="Video model not available")
+
     file = request.files.get("video")
+
     if not file or file.filename == "":
         return render_template("index.html",
                                video_prediction="No video selected")
@@ -166,17 +215,23 @@ def predict_video():
     file.save(path)
 
     cap = cv2.VideoCapture(path)
+
     predictions = []
     frame_count = 0
+    MAX_FRAMES = 20
 
     while True:
         ret, frame = cap.read()
-        if not ret or frame_count > 20:
+
+        if not ret or frame_count >= MAX_FRAMES:
             break
+
         frame = cv2.resize(frame, (224, 224))
         frame = frame / 255.0
         frame = np.expand_dims(frame, axis=0)
+
         pred = video_model.predict(frame)[0][0]
+
         predictions.append(pred)
         frame_count += 1
 
@@ -186,19 +241,20 @@ def predict_video():
         return render_template("index.html",
                                video_prediction="Video processing failed")
 
-    avg_pred = np.mean(predictions)
+    avg_prediction = np.mean(predictions)
 
-    if avg_pred > 0.5:
+    if avg_prediction > 0.5:
         label = "Real Video"
-        confidence = round(avg_pred * 100, 2)
+        confidence = round(avg_prediction * 100, 2)
     else:
         label = "Fake Video"
-        confidence = round((1 - avg_pred) * 100, 2)
+        confidence = round((1 - avg_prediction) * 100, 2)
 
     return render_template("index.html",
                            video_prediction=label,
                            video_confidence=confidence)
 
-# ---------------- RUN APP ----------------
+
+# ---------------- RUN APPLICATION ----------------
 if __name__ == "__main__":
     app.run(debug=True)
