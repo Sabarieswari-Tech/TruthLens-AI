@@ -1,142 +1,150 @@
 # TruthLens AI
 
-TruthLens AI is a multimodal fake content detection system that uses Artificial Intelligence and Machine Learning to determine whether digital content is real or fake.
-The system analyzes **text, images, audio, and video** to identify misinformation and manipulated media.
+TruthLens AI is a **Multimodal Fake Content Detection System** designed to identify whether digital content is **Real or Fake** using Machine Learning and Deep Learning techniques.
 
-The goal of this project is to help combat the spread of fake news and deepfakes by providing an automated verification tool.
+The system analyzes **Text, Images, Audio, and Video** to detect misinformation and manipulated media.  
+This project integrates **Artificial Intelligence models with a web-based application** to help users verify the authenticity of digital content.
+
+---
+
+## Application Screenshot
+
+![TruthLens AI Interface](assets/homepage.png)
 
 ---
 
 ## Features
 
-* Fake news detection from text content
-* Image manipulation detection
-* Audio authenticity analysis
-* Video deepfake detection
-* Web-based interface for easy interaction
-* Machine learning and deep learning models for prediction
+### Text Fake News Detection
+Analyzes news articles or text content and predicts whether the news is **Real or Fake** using Natural Language Processing (NLP) and machine learning models.
+
+### Image Manipulation Detection
+Uses a **Convolutional Neural Network (CNN)** model to detect manipulated or AI-generated images.
+
+### Audio Authenticity Detection
+Extracts **MFCC (Mel Frequency Cepstral Coefficients)** audio features and classifies whether the audio is **Real or Fake**.
+
+### Video Deepfake Detection
+Processes video frames and uses deep learning techniques to detect **Deepfake videos**.
 
 ---
 
-## Technologies Used
+## Technology Stack
 
 ### Frontend
-
-* HTML
-* CSS
-* JavaScript
+- HTML
+- CSS
+- JavaScript
 
 ### Backend
+- Python
+- Flask
 
-* Python
-* Flask
+### Machine Learning / Deep Learning
+- TensorFlow
+- Keras
+- Scikit-learn
+- Joblib
 
-### Machine Learning
+### Audio Processing
+- Librosa
 
-* TensorFlow
-* scikit-learn
-* joblib
-
-### Media Processing
-
-* OpenCV
-* librosa
-
----
-
-## System Workflow
-
-Input Content (Text / Image / Audio / Video)
-
-↓
-
-Preprocessing
-
-↓
-
-Feature Extraction
-
-↓
-
-Machine Learning / Deep Learning Model
-
-↓
-
-Prediction Output (Real or Fake)
-
----
-
-## Models Used
-
-### Text Detection
-
-* TF-IDF Vectorization
-* Support Vector Machine (SVM)
-
-### Image Detection
-
-* Convolutional Neural Network (CNN)
-
-### Audio Detection
-
-* Audio feature extraction using Librosa
-* Deep learning classifier
-
-### Video Detection
-
-* Frame extraction using OpenCV
-* CNN-based deepfake detection
+### Image & Video Processing
+- OpenCV
+- NumPy
 
 ---
 
 ## Project Structure
 
+```
 TruthLens-AI
+│
+├── app.py
+├── requirements.txt
+├── README.md
+│
+├── assets
+│   └── homepage.png
+│
+├── templates
+│   ├── index.html
+│   └── about.html
+│
+├── static
+│   └── css
+│       └── style.css
+│
+├── models
+│   ├── text_model.pkl
+│   ├── vectorizer.pkl
+│   ├── image_model.h5
+│   └── audio_model.h5
+│
+├── training
+│   ├── train_text.py
+│   ├── train_image.py
+│   ├── train_audio.py
+│   └── train_video.py
+│
+└── uploads
+```
 
-app.py
+---
 
-requirements.txt
+## Important Note
 
-README.md
+Due to **GitHub file size limitations**, the trained **video deepfake detection model (`video_model.h5`) is not included in this repository**.
 
-models/
+The application is designed to **safely handle the absence of the video model** and will disable video detection automatically if the model file is not available.
 
-trained_models/
+To enable video detection:
 
-static/
+1. Train the video model using:
 
-templates/
+```
+python train_video.py
+```
 
-screenshots/
+2. After training, place the model file inside:
 
-training_scripts/
+```
+models/video_model.h5
+```
 
 ---
 
 ## Installation
 
-### 1. Clone the repository
+Clone the repository:
 
-```bash
-git clone https://github.com/Sabarieswari-Tech/TruthLens-AI.git
+```
+git clone https://github.com/your-username/TruthLens-AI.git
+```
+
+Navigate to the project directory:
+
+```
 cd TruthLens-AI
 ```
 
-### 2. Install required dependencies
+Install the required dependencies:
 
-```bash
+```
 pip install -r requirements.txt
 ```
 
-### 3. Run the application
+---
 
-```bash
+## Running the Application
+
+Start the Flask server:
+
+```
 python app.py
 ```
 
-### 4. Open the web application
-
-Open your browser and go to:
+Open your browser and visit:
 
 ```
 http://127.0.0.1:5000
@@ -144,46 +152,35 @@ http://127.0.0.1:5000
 
 ---
 
-## Screenshots
+## Usage
 
-### Model Training Output
-
-Add your training screenshot here.
-
-Example:
-
-![Training Output](screenshots/training_output.png)
-
-### Web Interface
-
-![Interface](screenshots/interface.png)
-
----
-
-## Note
-
-Due to GitHub file size limitations, trained models and datasets are not included in this repository.
+1. Open the web application.
+2. Choose the detection type:
+   - Text Detection
+   - Image Detection
+   - Audio Detection
+   - Video Detection
+3. Upload content or enter text.
+4. The system analyzes the input and predicts whether it is **Real or Fake**.
 
 ---
 
 ## Future Improvements
 
-* Improve video deepfake detection accuracy
-* Deploy the application to cloud platforms
-* Add real-time misinformation detection
-* Support multilingual content analysis
-* Improve model performance with larger datasets
+- Improve deepfake video detection accuracy
+- Add real-time fake content monitoring
+- Deploy the application on cloud platforms
+- Expand datasets to improve model performance
 
 ---
 
 ## Author
 
-Sabarieswari S
-
-GitHub: https://github.com/Sabarieswari-Tech
+Sabarieswari S  
+Artificial Intelligence & Machine Learning Enthusiast
 
 ---
 
 ## License
 
-This project is licensed under the MIT License.
+This project is developed for **educational and research purposes**.
